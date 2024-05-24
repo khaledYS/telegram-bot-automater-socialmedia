@@ -6,7 +6,6 @@ import https from "https"
 import { readFile, createWriteStream } from "fs"
 import { promisify } from "util"
 import { Context } from 'telegraf';
-import { InlineKeyboardButton } from '@telegraf/types';
 
 const readFileAsync = promisify(readFile);
 const ig = new IgApiClient();
@@ -21,16 +20,15 @@ async function login() {
 
 interface IgUpVideoOptions{
   caption?: string;
-  mainMessage: number;
   message_id: number;
   chat_id: number;
   ctx: Context;
 }
-export const IgUpVideo = async ({caption, mainMessage, message_id, chat_id, ctx}:IgUpVideoOptions) => {
+export const IgUpVideo = async ({caption ,message_id, chat_id, ctx}:IgUpVideoOptions) => {
   try {
     await ctx.telegram.editMessageText(chat_id, message_id, undefined, "Logging to Instagram...")
     await login();
-
+    console.log("uploading")
     await ctx.telegram.editMessageText(chat_id, message_id, undefined, "Succed Logging, Uploading Video...")
     const videoPath = './video.mp4';
     const coverPath = './cover.jpg';
@@ -47,10 +45,11 @@ export const IgUpVideo = async ({caption, mainMessage, message_id, chat_id, ctx}
         location,          ----+
        */
     });
-    await ctx.telegram.editMessageText(chat_id, message_id, undefined, "")
+    await ctx.telegram.editMessageText(chat_id, message_id, undefined, "Uploaded to Instagram ✅")  
     await ctx.telegram.sendMessage(chat_id, "Finished Uploading video on instagram with the following url : instagram.com/p/" + publishResult.media.code)
   } catch (error) {
-
+    console.log(error)
+    await ctx.telegram.sendMessage(chat_id, "Erorr occured while uploading video📛")
   }
 }
 
@@ -66,7 +65,7 @@ export const storeVideo = async ({
 }: storeVideoOptions) => {
   try {
     await ctx.telegram.editMessageText(chat_id, message_id, undefined, "Storing Video In server...")
-    const file = await getBufferFromUrl(fileLink);
+    await getBufferFromUrl(fileLink);
     await ctx.telegram.editMessageText(chat_id, message_id, undefined, "Stored Video in Server ✅")
   } catch (error) {
     await ctx.telegram.editMessageText(chat_id, message_id, undefined, "Erorr occured while storing video📛")

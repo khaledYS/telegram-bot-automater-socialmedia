@@ -14,8 +14,8 @@ bot.command("start", async (ctx) => {
 })
 
 bot.use(async (ctx, next)=>{
-    console.log(ctx.message, process.env) 
-    if(ctx.message?.from.id == process.env.ADMIN_ID){
+    const id = ctx.callbackQuery?.from.id || ctx.message?.from.id || ctx.from?.id
+    if(id == process.env.ADMIN_ID){
         next()
     }else{
         ctx.reply("Only Owner is allowed to use this bot. \nContact Owner for mroe info:@OxGkcl")
@@ -60,7 +60,7 @@ bot.on("callback_query", async (ctx) => {
             await storeVideo({fileLink,mainMessage, message_id, chat_id, ctx})
         }else if(option === "uploadToInsta"){
             await IgUpVideo({
-                mainMessage, message_id, chat_id, ctx
+                 message_id, chat_id, ctx
             })
         }
     } catch (error) {
@@ -74,7 +74,6 @@ bot.on("callback_query", async (ctx) => {
 bot.on("message", async (ctx) => {
     if (!('text' in ctx.update.message)) return;
 
-    const text = ctx.update.message.text;
     // await IgUpVideo(text, "hopes")
 })
 bot.catch(async (err, ctx) => {

@@ -1,0 +1,6 @@
+[build]
+  command = "npm run build" # The build command for your Vite.js project
+  publish = "dist" # The directory where your built files are located
+
+[dev]
+  command = "npm run dev" # The development command for your Vite.js project

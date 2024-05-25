@@ -26,9 +26,6 @@ bot.on("video", async (ctx) => {
     const chat_id = ctx.chat.id;
     const fileId = ctx.update.message.video;
     const file_link = (await ctx.telegram.getFileLink(fileId)).href
-    await ctx.reply("Done Uploading Video to Telegram Server ")
-    const storingVideoInServer = (await ctx.reply("Store Video in Server⛔")).message_id;
-    const uploadingToInstagram = (await ctx.reply("Upload video to instagram⛔")).message_id;
     console.log(chat_id)
     try {
 
@@ -37,8 +34,8 @@ bot.on("video", async (ctx) => {
             reply_to_message_id: message_id,
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "Store Video", callback_data: JSON.stringify(["storeVideo", [storingVideoInServer, chat_id]]) }],
-                    [{ text: "Upload to Insta", callback_data: JSON.stringify(["uploadToInsta", [uploadingToInstagram, chat_id]]) }],
+                    [{ text: "Store Video", callback_data: JSON.stringify(["storeVideo", ["dddd", chat_id]]) }],
+                    [{ text: "Upload to Insta", callback_data: JSON.stringify(["uploadToInsta", ["ddd", chat_id]]) }],
                 ],
             }
         })

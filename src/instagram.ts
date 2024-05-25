@@ -2,9 +2,8 @@
 /* tslint:disable:no-console */
 import { IgApiClient } from 'instagram-private-api/dist/index.js';
 import { config } from "dotenv"
-import ffmpegStatic from 'ffmpeg-static';
 import ffmpeg from 'fluent-ffmpeg';
-import { readFile, write, writeFileSync } from "fs"
+import { readFile, writeFileSync } from "fs"
 import { path } from '@ffmpeg-installer/ffmpeg';
 import { promisify } from "util"
 import { Context } from 'telegraf';
@@ -35,7 +34,7 @@ interface IgUpVideoOptions {
   ctx: Context;
   fileLink: string;
 }
-export const IgUpVideo = async ({ fileLink, caption, message_id, chat_id, ctx }: IgUpVideoOptions) => {
+export const IgUpVideo = async ({ fileLink, caption, chat_id, ctx }: IgUpVideoOptions) => {
   try {
     const origin = tmp.fileSync({
       postfix: ".mp4"

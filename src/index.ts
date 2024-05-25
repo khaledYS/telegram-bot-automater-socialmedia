@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
 import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
-import { IgUpVideo, storeVideo } from "./instagram";
+import { IgUpVideo } from "./instagram";
 dotenv.config();
 const token = process.env.TOKEN;
 // const chnl_token = process.env.CHNL;
@@ -55,12 +55,12 @@ bot.on("callback_query", async (ctx) => {
         const data: string = ctx.update.callback_query.data as string
         const fileLink: string = ctx.update.callback_query.message.text as string
         const [option, [message_id, chat_id]] = JSON.parse(data);
-        const mainMessage = ctx.update.callback_query.message.message_id 
+        // const mainMessage = ctx.update.callback_query.message.message_id 
         if(option === "storeVideo"){
-            await storeVideo({fileLink,mainMessage, message_id, chat_id, ctx})
+            // await storeVideo({fileLink,mainMessage, message_id, chat_id, ctx})
         }else if(option === "uploadToInsta"){
             await IgUpVideo({
-                 message_id, chat_id, ctx
+                 message_id, chat_id, ctx, fileLink
             })
         }
     } catch (error) {
@@ -73,7 +73,8 @@ bot.on("callback_query", async (ctx) => {
 
 bot.on("message", async (ctx) => {
     if (!('text' in ctx.update.message)) return;
-
+    const fileLink = await ctx.telegram.getFileLink("AgACAgQAAxkBAAICH2ZQn6QE1Za1ejuzAdVJHxYUVDmoAAKgvzEbG2KJUt2uuVZMdGWdAQADAgADeQADNQQ")
+    console.log(fileLink)
     // await IgUpVideo(text, "hopes")
 })
 bot.catch(async (err, ctx) => {
